@@ -50,7 +50,7 @@ jobs:
                 docker push soulshake/app
 
             - name: Test our action
-              uses: soulshake/sensemaker
+              uses: soulshake/sensemaker@master
               with:
                   token: ${{ secrets.GH_TOKEN }}
                   repository: soulshake/sensemaker
