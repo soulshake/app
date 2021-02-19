@@ -55,5 +55,5 @@ jobs:
                   token: ${{ secrets.GH_TOKEN }}
                   repository: soulshake/sensemaker
                   event-type: deploy
-                  client-payload: '{"github": ${{ toJson(github) }}}'
+                  args: '{"github": ${{ toJson(github) }}}'
 
