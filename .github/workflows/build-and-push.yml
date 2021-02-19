@@ -1,4 +1,4 @@
-iname: Build and push
+name: Build and push
 on:
     pull_request:
         branches:
@@ -33,7 +33,13 @@ jobs:
                   echo "::endgroup::"
 
             - name: Build
+              # TODO: only run for pushes, not tags
               run: docker build -t soulshake/app .
+
+            - name: Retag
+              # TODO: retag images on tag push
+              run: |
+                echo "Not implemented"
 
             - name: Run
               run: docker run -ti hello-world
