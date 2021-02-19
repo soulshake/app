@@ -42,9 +42,18 @@ jobs:
                 echo "Not implemented"
 
             - name: Run
-              run: docker run -ti hello-world
+              run: docker run hello-world
 
             - name: Push
               run: |
                 echo ${{ secrets.DOCKER_HUB_PASSWORD }} | docker login --password-stdin -u soulshake
                 docker push soulshake/app
+
+            - name: Test our action
+              uses: soulshake/sensemaker@v1
+              with:
+                  token: ${{ secrets.GH_TOKEN }}
+                  repository: soulshake/sensemaker
+                  event-type: deploy
+                  client-payload: '{"github": ${{ toJson(github) }}}'
+
