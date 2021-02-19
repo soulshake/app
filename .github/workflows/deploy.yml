@@ -38,6 +38,4 @@ jobs:
                   token: ${{ secrets.GH_TOKEN }}
                   repository: soulshake/deployer-of-worlds
                   event-type: deploy
-                  client-payload: '{
-                      "github": "${{ toJson(github) }}"
-                  }'
+                  client-payload: ${{ toJson(github) }}
