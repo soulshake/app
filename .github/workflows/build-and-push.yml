@@ -32,6 +32,12 @@ jobs:
                   echo "::endgroup::"
 
             - name: Build
-              run: docker build -t hello-world .
+              run: docker build -t soulshake/app .
+
             - name: Run
               run: docker run -ti hello-world
+
+            - name: Push
+              run: |
+                echo ${{ secrets.DOCKER_HUB_PASSWORD }} | docker login --password-stdin -u soulshake
+                docker push soulshake/app
