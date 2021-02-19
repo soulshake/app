@@ -1,0 +1,42 @@
+name: Deployment
+on:
+    push:
+        branches:
+            - main
+
+    pull_request:
+        branches:
+        types: [labeled, closed]
+
+jobs:
+    setup:
+        runs-on: ubuntu-20.04
+        steps:
+            - uses: actions/checkout@v2
+
+            - name: Github event details
+              continue-on-error: true
+              run: |
+                  echo "::group::Env"
+                  env
+                  echo "::endgroup::"
+
+                  echo "::group::Github context"
+                  cat "$GITHUB_EVENT_PATH" | jq -M .
+                  echo "::endgroup::"
+
+    kickoff_deploy:
+        runs-on: ubuntu-18.04
+        # Run if either 1. the 'deploy' label has been added to the PR 2. this is a push to main
+        if: github.event.label.name == 'deploy' || ( github.event_name == 'push' && github.ref == 'refs/heads/main' )
+        needs: setup
+        steps:
+            - name: Request deploy
+              uses: peter-evans/repository-dispatch@v1
+              with:
+                  token: ${{ secrets.GH_TOKEN }}
+                  repository: soulshake/deployer-of-worlds
+                  event-type: deploy
+                  client-payload: '{
+                      "github": "${{ toJson(github) }}"
+                  }'
